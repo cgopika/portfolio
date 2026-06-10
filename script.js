@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const setLoaderState = () => {
     window.setTimeout(() => {
-      loader.classList.add('is-hidden');
+      if (loader) {
+        loader.classList.add('is-hidden');
+      }
       body.classList.add('is-ready');
     }, 250);
   };
@@ -33,14 +35,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const closeMobileNav = () => {
-    nav.classList.remove('nav-open');
-    navToggle.setAttribute('aria-expanded', 'false');
+    if (nav) {
+      nav.classList.remove('nav-open');
+    }
+    if (navToggle) {
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
   };
 
-  navToggle.addEventListener('click', () => {
-    const isOpen = nav.classList.toggle('nav-open');
-    navToggle.setAttribute('aria-expanded', String(isOpen));
-  });
+  if (navToggle) {
+    navToggle.addEventListener('click', () => {
+      const isOpen = nav ? nav.classList.toggle('nav-open') : false;
+      navToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+  }
 
   navLinks.forEach((link) => {
     link.addEventListener('click', () => {
@@ -89,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('section[id]').forEach((section) => pageSectionObserver.observe(section));
 
   const updateBackToTop = () => {
+    if (!backToTopButton) return;
     if (window.scrollY > 500) {
       backToTopButton.classList.add('is-visible');
     } else {
@@ -99,11 +108,14 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', updateBackToTop, { passive: true });
   updateBackToTop();
 
-  backToTopButton.addEventListener('click', () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+  if (backToTopButton) {
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   const updateGalleryCount = (visibleCards) => {
+    if (!projectCount) return;
     const count = visibleCards.length;
     projectCount.textContent = `Showing ${count} Project${count === 1 ? '' : 's'}`;
   };
@@ -169,20 +181,22 @@ document.addEventListener('DOMContentLoaded', () => {
   setActiveFilter('all');
   filterGallery('all');
 
-  contactForm.addEventListener('submit', (event) => {
-    event.preventDefault();
+  if (contactForm && formStatus) {
+    contactForm.addEventListener('submit', (event) => {
+      event.preventDefault();
 
-    const formData = new FormData(contactForm);
-    const name = String(formData.get('name') || '').trim();
+      const formData = new FormData(contactForm);
+      const name = String(formData.get('name') || '').trim();
 
-    if (!name) {
-      formStatus.textContent = 'Please enter your name before sending the message.';
-      formStatus.style.color = 'var(--accent)';
-      return;
-    }
+      if (!name) {
+        formStatus.textContent = 'Please enter your name before sending the message.';
+        formStatus.style.color = 'var(--accent)';
+        return;
+      }
 
-    formStatus.textContent = 'Thanks. Your message is ready to be connected to a backend or email service later.';
-    formStatus.style.color = 'var(--success)';
-    contactForm.reset();
-  });
+      formStatus.textContent = 'Thanks. Your message is ready to be connected to a backend or email service later.';
+      formStatus.style.color = 'var(--success)';
+      contactForm.reset();
+    });
+  }
 });

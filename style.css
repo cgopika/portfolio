@@ -2135,10 +2135,9 @@ textarea {
 }
 
 .blog-card__expanded {
-  display: block;
   max-height: 0;
-  opacity: 0;
   overflow: hidden;
+  opacity: 0;
   transition: max-height 0.4s ease, opacity 0.3s ease;
 }
 
@@ -2148,8 +2147,8 @@ textarea {
 }
 
 .blog-card.is-expanded .blog-card__expanded {
+  max-height: 500px;
   opacity: 1;
-  max-height: 1000px;
 }
 
 .blog-articles {
