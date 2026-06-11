@@ -3,8 +3,10 @@
 import requests
 from datetime import date
 
-def get_weather(city="Thiruvananthapuram"):
-    url = f"https://wttr.in/{city}?format=3"
+CITY="palakkad"
+
+def get_weather(city=CITY):
+    url = f"https://wttr.in/{city}?format=3&m"
 
     try:
         response = requests.get(url, timeout=10)
@@ -32,16 +34,33 @@ def get_quote():
         return f"Quote unavailable ({e})"
 
 
+# today = date.today()
+
+# summary = f"""
+# PULSE DAILY SUMMARY
+# Date: {today}
+
+# Weather:
+# {get_weather()}
+
+# Quote:
+# {get_quote()}
+# """
 today = date.today()
 
 summary = f"""
-PULSE DAILY SUMMARY
-Date: {today}
+╔════════════════════════════════════╗
+║         PULSE DAILY SUMMARY        ║
+╚════════════════════════════════════╝
 
-Weather:
+📅  {today}
+
+
+🌦️  WEATHER
 {get_weather()}
 
-Quote:
+
+💡  QUOTE OF THE DAY
 {get_quote()}
 """
 

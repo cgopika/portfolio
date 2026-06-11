@@ -1,9 +1,14 @@
 
-PULSE DAILY SUMMARY
-Date: 2026-06-11
+╔════════════════════════════════════╗
+║         PULSE DAILY SUMMARY        ║
+╚════════════════════════════════════╝
 
-Weather:
-Thiruvananthapuram: 🌦️  +30°C
+📅  2026-06-11
 
-Quote:
-"Goodness is the only investment that never fails." - Henry David Thoreau
+
+🌦️  WEATHER
+Palakkad: 🌦️  +30°C
+
+
+💡  QUOTE OF THE DAY
+"Better to live until you die." - Dan Millman
