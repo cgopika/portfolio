@@ -1,3 +1,4 @@
+import os
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -5,7 +6,7 @@ from email.mime.multipart import MIMEMultipart
 sender = "moaname032@gmail.com"
 receiver = "moaname032@gmail.com"
 
-app_password = "soha itka cjya ewon"
+app_password = os.getenv("EMAIL_PASSWORD")
 
 with open("news_digest.html", "r", encoding="utf-8") as file:
     html_content = file.read()

@@ -5,24 +5,39 @@ from datetime import date
 def get_bbc_headlines():
     url = "https://www.bbc.com/news"
 
-    response = requests.get(url)
+    response = requests.get(
+        url,
+        headers={"User-Agent": "Mozilla/5.0"}
+    )
+
     soup = BeautifulSoup(response.text, "html.parser")
 
     headlines = []
 
-    for h in soup.find_all("h2"):
-        text = h.get_text(strip=True)
+    for link in soup.find_all("a", href=True):
 
-        if len(text) > 20:
-            headlines.append(text)
+        text = link.get_text(strip=True)
+
+        href = link["href"]
+
+        if len(text) > 30 and "/news/" in href:
+
+            if href.startswith("/"):
+                href = "https://www.bbc.com" + href
+
+            item = {
+                "headline": text,
+                "link": href,
+                "time": str(date.today())
+            }
+
+            if item not in headlines:
+                headlines.append(item)
 
         if len(headlines) == 5:
             break
 
     return headlines
-
-
-bbc = get_bbc_headlines()
 
 def get_hackernews_headlines():
     url = "https://news.ycombinator.com/"
@@ -34,10 +49,17 @@ def get_hackernews_headlines():
     headlines = []
 
     for link in soup.select(".titleline a"):
+
         text = link.get_text(strip=True)
 
-        if "." not in text:
-            headlines.append(text)
+        if "." in text:
+             continue
+
+        headlines.append({
+            "headline": link.get_text(strip=True),
+            "link": link.get("href"),
+            "time": str(date.today())
+        })
 
         if len(headlines) == 5:
             break
@@ -56,11 +78,18 @@ def get_hindu_headlines():
 
     headlines = []
 
-    for h in soup.find_all(["h2", "h3"]):
-        text = h.get_text(strip=True)
+    for article in soup.select("h3.title a"):
 
-        if len(text) > 20 and text not in headlines:
-            headlines.append(text)
+        text = article.get_text(strip=True)
+        href = article.get("href")
+
+        if text and href:
+
+            headlines.append({
+                "headline": text,
+                "link": href,
+                "time": str(date.today())
+            })
 
         if len(headlines) == 5:
             break
@@ -98,8 +127,8 @@ box-shadow:0 2px 10px rgba(0,0,0,0.1);">
 
 <div style="padding:20px;">
 """
-
 for source, headlines in news_data.items():
+
     html += f"""
 <h2 style="color:#0f172a;
 border-bottom:2px solid #e5e7eb;
@@ -109,8 +138,34 @@ padding-bottom:5px;">
 <ul>
 """
 
-    for headline in headlines:
-        html += f"<li>{headline}</li>"
+    for item in headlines:
+
+        if isinstance(item, dict):
+
+            html += f"""
+            <li style="margin-bottom:12px;">
+                <a href="{item['link']}"
+                   style="color:#2563eb;text-decoration:none;">
+                   {item['headline']}
+                </a>
+                <br>
+                <small style="color:#666;">
+                    Published: {item['time']}
+                </small>
+            </li>
+            """
+
+        else:
+
+            html += f"""
+            <li>
+                {item}
+                <br>
+                <small style="color:#666;">
+                    Retrieved: {today}
+                </small>
+            </li>
+            """
 
     html += "</ul>"
 

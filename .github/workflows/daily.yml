@@ -25,6 +25,7 @@ jobs:
       - name: Generate weather summary
         env:
           EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+          OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
         run: python bot.py
 
       - name: Generate news digest
