@@ -121,6 +121,8 @@ with open("daily_summary.txt", "w", encoding="utf-8") as file:
 
 print("Daily summary saved to daily_summary.txt")
 
+send_email(summary)
+
 alert = get_weather_alert()
 
 if alert:
